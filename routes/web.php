@@ -13,5 +13,9 @@ Route::group(['prefix' => 'user'], function() {
 });
 
 Route::group(['prefix' => 'transaction'], function() {
-    
+    Route::patch('/cancel/{id}', 'App\Http\Controllers\Transaction\TransactionController@cancelTransaction');
+    Route::post('/create', 'App\Http\Controllers\Transaction\TransactionController@createTransaction');
+    Route::get('/', 'App\Http\Controllers\Transaction\TransactionController@getAll');
+    Route::get('/{id}', 'App\Http\Controllers\Transaction\TransactionController@getTransaction');
+    Route::get('/user_transactions/{user_id}', 'App\Http\Controllers\Transaction\TransactionController@getAllUserTransactions');
 });
