@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('transaction_uuid')->unique();
             $table->double('amount');
-            $table->binary('type')->comment = '0 = Money Transfer, 1 = Deposit';
+            $table->integer('type')->comment = '0 = Money Transfer, 1 = Deposit';
             $table->bigInteger('user_sender', false, true)->nullable()->comment('Null if transaction is a deposit');
             $table->bigInteger('user_reciever', false, true);
             $table->index('user_sender');
