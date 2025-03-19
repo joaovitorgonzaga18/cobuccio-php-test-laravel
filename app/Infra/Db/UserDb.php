@@ -4,6 +4,7 @@ namespace App\Infra\Db;
 
 use App\Domain\User\User;
 use App\Domain\User\UserPersistenceInterface;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class UserDb implements UserPersistenceInterface {
@@ -44,6 +45,7 @@ class UserDb implements UserPersistenceInterface {
                 self::COLUMN_NAME,
                 self::COLUMN_EMAIL,
                 self::COLUMN_CURRENCY,
+                self::COLUMN_CREATED_AT,
             ])
             ->get()
         ;
@@ -54,6 +56,7 @@ class UserDb implements UserPersistenceInterface {
                 ->setName($record->name)
                 ->setEmail($record->email)
                 ->setCurrency($record->currency)
+                ->setDateCreatedAt(new DateTime($record->created_at))
             ;
         }
 
@@ -67,6 +70,7 @@ class UserDb implements UserPersistenceInterface {
                 self::COLUMN_NAME,
                 self::COLUMN_EMAIL,
                 self::COLUMN_CURRENCY,
+                self::COLUMN_CREATED_AT,
             ])
             ->where([
                 self::COLUMN_ID => $user->getId()
@@ -79,18 +83,17 @@ class UserDb implements UserPersistenceInterface {
             ->setName($records->name)
             ->setEmail($records->email)
             ->setCurrency($records->currency)
+            ->setDateCreatedAt(new DateTime($records->created_at))
         ;
 
         return $users;
     }
 
     public function deleteUser(User $user): void {
-        /* DB::table(self::TABLE_NAME)
-            ->where([self::COLUMN_ID => $user->getId(), self::COLUMN_DELETED_AT => null])
-            ->update([
-                self::COLUMN_DELETED_AT => $user->getDateDeleted(),
-            ])
-        ; */
+        DB::table(self::TABLE_NAME)
+            ->where([self::COLUMN_ID => $user->getId()])
+            ->delete()
+        ;
     }
 
     public function editName(User $user): void {
@@ -98,6 +101,7 @@ class UserDb implements UserPersistenceInterface {
             ->where([self::COLUMN_ID => $user->getId()])
             ->update([
                 self::COLUMN_NAME => $user->getName(),
+                self::COLUMN_UPDATED_AT => new DateTime('now'),
             ])
         ;
     }
@@ -107,6 +111,7 @@ class UserDb implements UserPersistenceInterface {
             ->where([self::COLUMN_ID => $user->getId()])
             ->update([
                 self::COLUMN_EMAIL => $user->getEmail(),
+                self::COLUMN_UPDATED_AT => new DateTime('now'),
             ])
         ;
     }

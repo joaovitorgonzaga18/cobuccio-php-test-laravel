@@ -9,7 +9,7 @@ class User {
     private string $name;
     private string $email;
     private string $password;
-    private float $currency;
+    private float $currency = 0.0;
     private string $auth_pin;
     private DateTime $dateCreatedAt;
     private DateTime $dateUpdatedAt;

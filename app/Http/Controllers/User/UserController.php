@@ -44,7 +44,8 @@ class UserController extends Controller {
                 'message'=> 'User was created successfully',
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
-                'created_at' => $user->getDateCreatedAt()
+                'currency' => $user->getCurrency(),
+                'created_at' => $user->getDateCreatedAt()->format('Y-m-d H:i:s')
             ];
             
             return response()->json($response, 200);
@@ -76,7 +77,8 @@ class UserController extends Controller {
                 'id' => $users->getId(),
                 'name' => $users->getName(),
                 'email' => $users->getEmail(),
-                'created_at' => $user->getDateCreatedAt()
+                'currency' => $users->getCurrency(),
+                'created_at' => $users->getDateCreatedAt()->format('Y-m-d H:i:s')
             ];
 
             return response()->json($response, 200);
@@ -106,7 +108,8 @@ class UserController extends Controller {
                     'id' => $user->getId(),
                     'name' => $user->getName(),
                     'email' => $user->getEmail(),
-                    'created_at' => $user->getDateCreatedAt()
+                    'currency' => $user->getCurrency(),
+                    'created_at' => $user->getDateCreatedAt()->format('Y-m-d H:i:s')
                 ];
             }
 
