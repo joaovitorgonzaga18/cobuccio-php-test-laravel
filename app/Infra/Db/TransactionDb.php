@@ -172,6 +172,11 @@ class TransactionDb implements TransactionPersistenceInterface {
                 self::COLUMN_CANCELLED => $transaction->isCancelled(),
             ])
         ;
+
+    public function checkIfExist(Transaction $transaction): bool {
+        return DB::table(self::TABLE_NAME)
+            ->where([self::COLUMN_UUID => $transaction->getUuid()])
+            ->exists();
     }
 
 }

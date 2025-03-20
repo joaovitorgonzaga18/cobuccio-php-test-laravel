@@ -9,4 +9,5 @@ interface TransactionPersistenceInterface
     public function findAllUserTransactions(Transaction $Transaction, string $user_id): array;
     public function getTransaction(Transaction $Transaction): Transaction;
     public function cancelTransaction(Transaction $Transaction): void;
+    public function checkIfExist(Transaction $Transaction): bool;
 }

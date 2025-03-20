@@ -131,4 +131,8 @@ class Transaction {
     public function cancelTransaction(): void {
         $this->persistence->cancelTransaction($this);
     }
+
+    public function checkIfExist(): bool {
+        return $this->persistence->checkIfExist($this);
+    }
 }
