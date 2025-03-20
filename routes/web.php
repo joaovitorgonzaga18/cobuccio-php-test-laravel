@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 
 Route::post('/login', 'App\Http\Controllers\Auth\AuthController@login')->name('login');
 Route::middleware('auth:sanctum')->post('/logout', 'App\Http\Controllers\Auth\AuthController@logout')->name('logout');
