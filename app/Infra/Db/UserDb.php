@@ -125,4 +125,10 @@ class UserDb implements UserPersistenceInterface {
             ])
         ;            
     }
+
+    public function checkIfExist(User $user): bool {
+        return DB::table(self::TABLE_NAME)
+            ->where([self::COLUMN_ID => $user->getId()])
+            ->exists();
+    }
 }

@@ -12,4 +12,5 @@ interface UserPersistenceInterface
     public function editName(User $user): void;
     public function editEmail(User $user): void;
     public function updateCurrency(User $user): void;
+    public function checkIfExist(User $user): bool;
 }

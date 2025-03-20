@@ -13,6 +13,11 @@ use DateTime;
 
 class UserController extends Controller {
 
+    private const NAME_MAX_LENGTH = 100;
+    private const EMAIL_MAX_LENGTH = 100;
+    private const PASSWORD_MAX_LENGTH = 100;
+    private const AUTH_PIN_LENGTH = 4;
+
     public function createUser(Request $request): JsonResponse {
 
         $response = [];
@@ -23,8 +28,20 @@ class UserController extends Controller {
             $user  = new User(new UserDb());
             $dateCreation = new DateTime('now');            
 
-            if (strlen($post['auth_pin']) < 4 || strlen($post['auth_pin']) > 4)
-                return response()->json(['success' => false, 'message' => 'The authentication PIN length must be 4 characters long'], 422);
+            if (strlen($post['name']) > self::NAME_MAX_LENGTH)
+                return $this->buildResponse(['success' => false, 'message' => 'The name maximum length is ' . self::NAME_MAX_LENGTH . ' characters long'], 422);
+
+            if (strlen($post['email']) > self::EMAIL_MAX_LENGTH)
+                return $this->buildResponse(['success' => false, 'message' => 'The e-mail maximum length is ' . self::EMAIL_MAX_LENGTH . ' characters long'], 422);
+                
+            if (strlen($post['password']) > self::PASSWORD_MAX_LENGTH)
+                return $this->buildResponse(['success' => false, 'message' => 'The password maximum length is ' . self::PASSWORD_MAX_LENGTH . ' characters long'], 422);
+
+            if (strlen($post['auth_pin']) < self::AUTH_PIN_LENGTH || strlen($post['auth_pin']) > self::AUTH_PIN_LENGTH)
+                return $this->buildResponse(['success' => false, 'message' => 'The authentication PIN length must be ' . self::AUTH_PIN_LENGTH . ' characters long'], 422);
+
+            if (!ctype_digit($post['auth_pin']))
+                return $this->buildResponse(['success' => false, 'message' => 'Invalid Authentication PIN'], 422);
 
             $user
                 ->setName($post['name'])
@@ -35,7 +52,7 @@ class UserController extends Controller {
             ;
 
             if ($user->checkAlreadyCreatedEmail())
-                return response()->json(['success' => false, 'message' => 'E-mail already in use'], 409);
+                return $this->buildResponse(['success' => false, 'message' => 'E-mail already in use'], 409);
 
             $user->createUser();
             
@@ -48,10 +65,10 @@ class UserController extends Controller {
                 'created_at' => $user->getDateCreatedAt()->format('Y-m-d H:i:s')
             ];
             
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch(Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -69,6 +86,9 @@ class UserController extends Controller {
                 ->setId($id)
             ;
 
+            if (!$user->checkIfExist())
+                return $this->buildResponse(['success' => false, 'message' => 'User not found'], 404);
+
             $users = $user->getUser();
 
             $response = [
@@ -81,10 +101,10 @@ class UserController extends Controller {
                 'created_at' => $users->getDateCreatedAt()->format('Y-m-d H:i:s')
             ];
 
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -99,6 +119,9 @@ class UserController extends Controller {
             $user = new User(new UserDb());
 
             $users = $user->findAll();
+
+            if (count($users) == 0)                
+                return $this->buildResponse(['success' => false, 'message' => 'No Users found'], 404);
 
             $response['sucess'] = true;
             $response['message'] = 'Users found';
@@ -116,7 +139,7 @@ class UserController extends Controller {
             return response()->json($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }

@@ -128,6 +128,10 @@ class User {
         $this->persistence->updateCurrency($this);
     }
 
+    public function checkIfExist(): bool {
+        return $this->persistence->checkIfExist($this);
+    }
+
 /*     public function deleteUser(): void {
         $this->persistence->deleteUSer($this);
     } */
