@@ -5,6 +5,7 @@ namespace App\Infra\Db;
 use App\Domain\User\User;
 use App\Domain\User\UserPersistenceInterface;
 use DateTime;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UserDb implements UserPersistenceInterface {
@@ -53,15 +54,17 @@ class UserDb implements UserPersistenceInterface {
         ;
 
         foreach ($records as $record) {
+            try{
             $users[] = (new User(new UserDb()))
                 ->setId($record->id)
                 ->setName($record->name)
                 ->setEmail($record->email)
-                ->setEmail($record->password)
-                ->setAuthPin($records->atuh_pin)
+                ->setPassword($record->password)
+                ->setAuthPin($record->auth_pin)
                 ->setCurrency($record->currency)
                 ->setDateCreatedAt(new DateTime($record->created_at))
             ;
+            } catch (Exception $e) {echo $e;}
         }
 
         return $users;
