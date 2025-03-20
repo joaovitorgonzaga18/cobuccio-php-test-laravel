@@ -82,10 +82,10 @@ class TransactionController extends Controller {
                 'date_time' => $transaction->getDateTime()->format('Y-m-d H:i:s')
             ];
             
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch(Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -100,6 +100,9 @@ class TransactionController extends Controller {
             $transaction = new Transaction(new TransactionDb());
 
             $transactions = $transaction->findAll();
+            
+            if (count($transactions) == 0)                
+                return $this->buildResponse(['success' => false, 'message' => 'No Transactions found'], 404);
 
             $response['sucess'] = true;
             $response['message'] = 'Transactions found';
@@ -116,10 +119,10 @@ class TransactionController extends Controller {
                 ];
             }
 
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -134,6 +137,9 @@ class TransactionController extends Controller {
             $transaction = new Transaction(new TransactionDb());
 
             $transactions = $transaction->findAllUserTransactions($user_id);
+            
+            if (count($transactions) == 0)                
+                return $this->buildResponse(['success' => false, 'message' => 'No Transactions found'], 404);
 
             $response['sucess'] = true;
             $response['message'] = 'Transactions found';
@@ -150,10 +156,10 @@ class TransactionController extends Controller {
                 ];
             }
 
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -170,6 +176,10 @@ class TransactionController extends Controller {
                 ->setUuid($id)
             ;
 
+            if (!$transaction->checkIfExist())
+                return $this->buildResponse(['success' => false, 'message' => 'Transaction not found'], 404);
+                
+
             $transactions = $transaction->getTransaction();
 
             $response = [
@@ -184,10 +194,10 @@ class TransactionController extends Controller {
                 'cancelled' => $transactions->isCancelled()
             ];
 
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -204,22 +214,31 @@ class TransactionController extends Controller {
 
             $transaction
                 ->setUuid($id)
-                ->setCancelled(true);
             ;
 
-            $transaction->cancelTransaction();
+            $transaction = $transaction->getTransaction();
+
+            if ($transaction->isCancelled())
+                return $this->buildResponse(['success' => false, 'message' => 'Transaction already cancelled'], 409);
+
+            $transaction->setCancelled(true)->cancelTransaction();
 
             $response = [
                 'success' => true,
                 'message' => 'Transaction cancelled',
                 'transaction_uuid' => $transaction->getUuid(),
-                'cancelled' => $transaction->isCancelled(),
+                'amount' => $transaction->getAmount(),
+                'type' => $transaction->getType(),
+                'sender' => $transaction->getSender()->getName(),
+                'reciever' => $transaction->getReciever()->getName(),
+                'date_time' => $transaction->getDateTime()->format('Y-m-d H:i:s'),
+                'cancelled' => $transaction->isCancelled()
             ];
 
-            return response()->json($response, 200);
+            return $this->buildResponse($response, 200);
 
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e], 400);
+            return $this->buildResponse(['success' => false, 'message' => $e], 400);
         } catch (\Exception $e) {
             throw $e;
         }

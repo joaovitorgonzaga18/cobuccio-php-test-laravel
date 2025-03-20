@@ -22,13 +22,13 @@ class TransactionDb implements TransactionPersistenceInterface {
     private const COLUMN_CANCELLED = 'cancelled';
 
     public function create(Transaction $transaction): void {  
-        $sender = ($transaction->getSender()) ? $transaction->getSender() : null;
-        $reciever = ($transaction->getReciever()) ? $transaction->getReciever() : null;
+        $sender = $transaction->getSender();
+        $reciever = $transaction->getReciever();
         $db = DB::table(self::TABLE_NAME)->insert([
             self::COLUMN_UUID => $transaction->getUuid(),
             self::COLUMN_AMOUNT => $transaction->getAmount(),
             self::COLUMN_TYPE => $transaction->getType(),
-            self::COLUMN_SENDER => $sender->getId(),
+            self::COLUMN_SENDER => ($sender) ? $sender->getId() : null,
             self::COLUMN_RECIEVER => $reciever->getId(),
             self::COLUMN_DATE_TIME => $transaction->getDateTime(),
         ]);
@@ -166,12 +166,24 @@ class TransactionDb implements TransactionPersistenceInterface {
     }
 
     public function cancelTransaction(Transaction $transaction): void {        
-        DB::table(self::TABLE_NAME)
+        $sender = ($transaction->getSender()) ? $transaction->getSender() : null;
+        $reciever = ($transaction->getReciever()) ? $transaction->getReciever() : null;
+        $db = DB::table(self::TABLE_NAME)
             ->where([self::COLUMN_UUID => $transaction->getUuid()])
             ->update([
                 self::COLUMN_CANCELLED => $transaction->isCancelled(),
             ])
         ;
+
+        if ($db) {
+            if ($sender) {
+                $sender->setCurrency($sender->getCurrency() + $transaction->getAmount());
+                $sender->updateCurrency();
+            }
+            $reciever->setCurrency($reciever->getCurrency() - $transaction->getAmount());
+            $reciever->updateCurrency();
+        }
+    }
 
     public function checkIfExist(Transaction $transaction): bool {
         return DB::table(self::TABLE_NAME)
