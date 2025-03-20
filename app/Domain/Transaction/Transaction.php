@@ -74,9 +74,8 @@ class Transaction {
         return $this;
     }
  
-    public function getSender(): User {
-        $user = new User(new UserDb());
-        return ($this->sender) ? $this->sender : $user->setName('');
+    public function getSender(): ?User{
+        return $this->sender;
     }
 
     public function setReciever(User $reciever): Transaction {
