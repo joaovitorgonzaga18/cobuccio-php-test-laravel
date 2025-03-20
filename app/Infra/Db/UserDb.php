@@ -115,4 +115,14 @@ class UserDb implements UserPersistenceInterface {
             ])
         ;
     }
+
+    public function updateCurrency(User $user): void {
+        DB::table(self::TABLE_NAME)
+            ->where([self::COLUMN_ID => $user->getId()])
+            ->update([
+                self::COLUMN_CURRENCY => $user->getCurrency(),
+                self::COLUMN_UPDATED_AT => new DateTime('now')
+            ])
+        ;            
+    }
 }

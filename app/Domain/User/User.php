@@ -124,6 +124,10 @@ class User {
         return $this->persistence->getUser($this);
     }
 
+    public function updateCurrency():void {
+        $this->persistence->updateCurrency($this);
+    }
+
 /*     public function deleteUser(): void {
         $this->persistence->deleteUSer($this);
     } */
