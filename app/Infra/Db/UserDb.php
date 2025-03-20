@@ -44,6 +44,8 @@ class UserDb implements UserPersistenceInterface {
                 self::COLUMN_ID,
                 self::COLUMN_NAME,
                 self::COLUMN_EMAIL,
+                self::COLUMN_PASSWORD,
+                self::COLUMN_AUTH_PIN,
                 self::COLUMN_CURRENCY,
                 self::COLUMN_CREATED_AT,
             ])
@@ -55,6 +57,8 @@ class UserDb implements UserPersistenceInterface {
                 ->setId($record->id)
                 ->setName($record->name)
                 ->setEmail($record->email)
+                ->setEmail($record->password)
+                ->setAuthPin($records->atuh_pin)
                 ->setCurrency($record->currency)
                 ->setDateCreatedAt(new DateTime($record->created_at))
             ;
@@ -69,6 +73,8 @@ class UserDb implements UserPersistenceInterface {
                 self::COLUMN_ID,
                 self::COLUMN_NAME,
                 self::COLUMN_EMAIL,
+                self::COLUMN_PASSWORD,
+                self::COLUMN_AUTH_PIN,
                 self::COLUMN_CURRENCY,
                 self::COLUMN_CREATED_AT,
             ])
@@ -82,6 +88,8 @@ class UserDb implements UserPersistenceInterface {
             ->setId($records->id)
             ->setName($records->name)
             ->setEmail($records->email)
+            ->setPassword($records->password)
+            ->setAuthPin($records->auth_pin)
             ->setCurrency($records->currency)
             ->setDateCreatedAt(new DateTime($records->created_at))
         ;
