@@ -112,7 +112,7 @@ class TransactionController extends Controller {
                     'transaction_uuid' => $transaction->getUuid(),
                     'amount' => $transaction->getAmount(),
                     'type' => $transaction->getType(),
-                    'sender' => $transaction->getSender()->getName(),
+                    'sender' => ($transaction->getSender()) ? $transaction->getSender()->getName() : '',
                     'reciever' => $transaction->getReciever()->getName(),
                     'date_time' => $transaction->getDateTime()->format('Y-m-d H:i:s'),
                     'cancelled' => $transaction->isCancelled()
@@ -149,7 +149,7 @@ class TransactionController extends Controller {
                     'transaction_uuid' => $transaction->getUuid(),
                     'amount' => $transaction->getAmount(),
                     'type' => $transaction->getType(),
-                    'sender' => $transaction->getSender()->getName(),
+                    'sender' => ($transaction->getSender()) ? $transaction->getSender()->getName() : '',
                     'reciever' => $transaction->getReciever()->getName(),
                     'date_time' => $transaction->getDateTime()->format('Y-m-d H:i:s'),
                     'cancelled' => $transaction->isCancelled()
@@ -215,6 +215,9 @@ class TransactionController extends Controller {
             $transaction
                 ->setUuid($id)
             ;
+
+            if (!$transaction->checkIfExist())
+                return $this->buildResponse(['success' => false, 'message' => 'Transaction not found'], 404);
 
             $transaction = $transaction->getTransaction();
 
