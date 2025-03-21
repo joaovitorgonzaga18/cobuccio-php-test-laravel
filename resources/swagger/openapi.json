@@ -1,0 +1,956 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Your API",
+        "description": "",
+        "version": ""
+    },
+    "servers": [
+        {
+            "url": "",
+            "description": ""
+        }
+    ],
+    "paths": {
+        "/user/create": {
+            "post": {
+                "summary": "",
+                "description": "Create a new user",
+                "operationId": "createUser",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "auth_pin"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "maxLength": 100,
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "maxLength": 100,
+                                        "example": "John Doe"
+                                    },
+                                    "auth_pin": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "maxLength": 4,
+                                        "example": "John Doe"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User was created successfully"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "john.doe@example.com"
+                                        },
+                                        "currency": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-03-20 21:51:36"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid request - Max length exceeded",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "The name maximum length is 100 characters long"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "The email maximum length is 100 characters long"
+                                                },
+                                                "password": {
+                                                    "type": "string",
+                                                    "example": "The password maximum length is 100 characters long"
+                                                },
+                                                "auth_pin": {
+                                                    "type": "string",
+                                                    "example": "The authentication pin length is 4 characters long"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Invalid request - E-mail already in use",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "E-mail already in use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "summary": "",
+                "description": "Get a user by its ID",
+                "operationId": "getUser",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the found user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User found"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "john.doe@example.com"
+                                        },
+                                        "currency": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-03-20 21:51:36"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when user is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "summary": "",
+                "description": "Get a list with all users user",
+                "operationId": "getAllUsers",
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users found"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "example": "3"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "joao vitor"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "format": "email",
+                                                        "example": "joaovitorgonzaga18@gmail.com"
+                                                    },
+                                                    "currency": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-03-20 18:33:40"
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": "3",
+                                                    "name": "John Doe",
+                                                    "email": "johndoe@gmail.com",
+                                                    "currency": 0,
+                                                    "created_at": "2025-03-20 18:33:40"
+                                                },
+                                                {
+                                                    "id": "4",
+                                                    "name": "Dave Williams",
+                                                    "email": "davewilliams@gmail.com",
+                                                    "currency": 30,
+                                                    "created_at": "2025-03-20 20:09:17"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when no users are found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No users found"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/cancel/{id}": {
+            "patch": {
+                "summary": "",
+                "description": "Cancel a transaction by its ID",
+                "operationId": "cancelTransaction",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the cancelled transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction cancelled"
+                                        },
+                                        "transaction_uuid": {
+                                            "type": "string",
+                                            "example": "71af546f-0229-4436-b913-6f8ce8fd8cd8"
+                                        },
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "type": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "sender": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "reciever": {
+                                            "type": "Dave Williams",
+                                            "example": "2025-03-20 21:51:36"
+                                        },
+                                        "date_time": {
+                                            "type": "string",
+                                            "example": "2025-03-20 21:51:36"
+                                        },
+                                        "cancelled": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Not successful response if the transaction was already cancelled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction already cancelled"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when transaction is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction not found"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/create": {
+            "post": {
+                "summary": "",
+                "description": "",
+                "operationId": "createTransaction",
+                "tags": [
+                    "Transaction"
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "amount",
+                                    "type",
+                                    "sender_id",
+                                    "reciever_id",
+                                    "auth_pin"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "type": {
+                                        "type": "integer",
+                                        "example": 0
+                                    },
+                                    "sender_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "reciever_id": {
+                                        "type": "integer",
+                                        "example": 4
+                                    },
+                                    "auth_pin": {
+                                        "type": "integer",  
+                                        "format": "password",
+                                        "example": 1992
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the created transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction  was created successfully"
+                                        },
+                                        "transaction_uuid": {
+                                            "type": "string",
+                                            "example": "187388ca-14e1-41db-916f-03d77705120e"
+                                        },
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 1000
+                                        },
+                                        "type": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "sender": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "reciever": {
+                                            "type": "string",
+                                            "example": "Dave Williams"
+                                        },
+                                        "date_time": {
+                                            "type": "string",
+                                            "example": "2025-03-21 00:12:21"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when sender or reciever user is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sender User not found"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "email"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Not successful response when authentication PIN is not valid or when balance is no sufficient",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid PIN"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctumAuth": []
+                    }
+                ]
+            }
+        },
+        "/transaction": {
+            "get": {
+                "summary": "",
+                "description": "Get a list with all transactions",
+                "operationId": "getAllTransactions",
+                "tags": [
+                    "Transaction"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the transactions list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transactions found"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "transaction_uuid": {
+                                                        "type": "string",
+                                                        "example": "ba3805bd-4839-47e3-8f5c-d1c20dd20cbb"
+                                                    },
+                                                    "amount": {
+                                                        "type": "integer",
+                                                        "example": 100
+                                                    },
+                                                    "type": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "sender": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "reciever": {
+                                                        "type": "string",
+                                                        "example": "Dave Williams"
+                                                    },
+                                                    "date_time": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-03-20 18:33:40"
+                                                    },
+                                                    "cancelled": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "transaction_uuid": "ba3805bd-4839-47e3-8f5c-d1c20dd20cbb",
+                                                    "amount": 10,
+                                                    "type": 1,
+                                                    "sender": "",
+                                                    "reciever": "John Doe",
+                                                    "date_time": "2025-03-20 20:48:59",
+                                                    "cancelled": false
+                                                },
+                                                {
+                                                    "transaction_uuid": "71af546f-0229-4436-b913-6f8ce8fd8cd8",
+                                                    "amount": 10,
+                                                    "type": 0,
+                                                    "sender": "Dave Williams",
+                                                    "reciever": "John Doe",
+                                                    "date_time": "2025-03-20 20:54:40",
+                                                    "cancelled": true
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when no transactions are found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No transactions found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/{id}": {
+            "get": {
+                "summary": "",
+                "description": "Get a transaction by its ID",
+                "operationId": "getTransaction",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the found transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction found"
+                                        },
+                                        "transaction_uuid": {
+                                            "type": "string",
+                                            "example": "71af546f-0229-4436-b913-6f8ce8fd8cd8"
+                                        },
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 100
+                                        },
+                                        "type": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "sender": {
+                                            "type": "string",
+                                            "example": "John Doe"
+                                        },
+                                        "reciever": {
+                                            "type": "string",
+                                            "example": "Dave Williams"
+                                        },
+                                        "cancelled": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when transaction is not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transaction not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/transaction/user_transactions/{user_id}": {
+            "get": {
+                "summary": "",
+                "description": "Get a list with all transactions from a single user by its ID",
+                "operationId": "getAllTransactions",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response with the user's transactions list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Transactions found"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "transaction_uuid": {
+                                                        "type": "string",
+                                                        "example": "ba3805bd-4839-47e3-8f5c-d1c20dd20cbb"
+                                                    },
+                                                    "amount": {
+                                                        "type": "integer",
+                                                        "example": 100
+                                                    },
+                                                    "type": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "sender": {
+                                                        "type": "string",
+                                                        "example": "John Doe"
+                                                    },
+                                                    "reciever": {
+                                                        "type": "string",
+                                                        "example": "Dave Williams"
+                                                    },
+                                                    "date_time": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-03-20 18:33:40"
+                                                    },
+                                                    "cancelled": {
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    }
+                                                }
+                                            },
+                                            "example": [
+                                                {
+                                                    "transaction_uuid": "ba3805bd-4839-47e3-8f5c-d1c20dd20cbb",
+                                                    "amount": 10,
+                                                    "type": 1,
+                                                    "sender": "",
+                                                    "reciever": "John Doe",
+                                                    "date_time": "2025-03-20 20:48:59",
+                                                    "cancelled": false
+                                                },
+                                                {
+                                                    "transaction_uuid": "71af546f-0229-4436-b913-6f8ce8fd8cd8",
+                                                    "amount": 120,
+                                                    "type": 1,
+                                                    "sender": "",
+                                                    "reciever": "John Doe",
+                                                    "date_time": "2025-03-20 20:54:40",
+                                                    "cancelled": false
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not successful response when no transactions are found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No transactions found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {},
+        "securitySchemes": {
+            "sanctumAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
